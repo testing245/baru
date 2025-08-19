@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Datang - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            min-height: 600px;
+        }
+
+        .illustration-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .illustration {
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .desk-setup {
+            width: 300px;
+            height: 200px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .desk {
+            width: 250px;
+            height: 8px;
+            background: #fff;
+            border-radius: 4px;
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .monitor {
+            width: 80px;
+            height: 50px;
+            background: #333;
+            border-radius: 4px;
+            position: absolute;
+            bottom: 68px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 3px solid #fff;
+        }
+
+        .monitor::after {
+            content: '';
+            width: 60px;
+            height: 35px;
+            background: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 2px;
+        }
+
+        .books {
+            width: 40px;
+            height: 25px;
+            background: #fff;
+            position: absolute;
+            bottom: 68px;
+            left: 30px;
+            border-radius: 2px;
+        }
+
+        .books::before {
+            content: '';
+            width: 40px;
+            height: 8px;
+            background: #f39c12;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .person {
+            width: 60px;
+            height: 80px;
+            position: absolute;
+            bottom: 68px;
+            right: 50px;
+        }
+
+        .person-head {
+            width: 20px;
+            height: 20px;
+            background: #ffdbac;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .person-body {
+            width: 30px;
+            height: 35px;
+            background: #f39c12;
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .person-arm {
+            width: 25px;
+            height: 8px;
+            background: #f39c12;
+            position: absolute;
+            top: 25px;
+            right: -10px;
+            border-radius: 4px;
+            transform: rotate(-30deg);
+        }
+
+        .person-legs {
+            width: 35px;
+            height: 25px;
+            background: #2c3e50;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 0 0 8px 8px;
+        }
+
+        .plant {
+            width: 15px;
+            height: 40px;
+            position: absolute;
+            bottom: 68px;
+            left: 10px;
+        }
+
+        .plant-pot {
+            width: 15px;
+            height: 12px;
+            background: #8b6f47;
+            position: absolute;
+            bottom: 0;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .plant-stem {
+            width: 3px;
+            height: 20px;
+            background: #27ae60;
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .plant-leaves {
+            width: 12px;
+            height: 8px;
+            background: #27ae60;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 6px;
+        }
+
+        .login-section {
+            flex: 1;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            margin-bottom: 40px;
+        }
+
+        .login-title {
+            color: #f39c12;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            padding: 4px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .tab-button.active {
+            background: #f39c12;
+            color: white;
+            box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+        }
+
+        .login-form {
+            display: block;
+        }
+
+        .login-form.hidden {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #f39c12;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .forgot-password a {
+            color: #f39c12;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #e67e22;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .login-button:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .signup-link {
+            text-align: center;
+            color: #666;
+        }
+
+        .signup-link a {
+            color: #f39c12;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            color: #e67e22;
+        }
+
+        /* RFID Specific Styles */
+        .rfid-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .rfid-reader {
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            margin: 0 auto 30px;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rfid-reader::before {
+            content: '';
+            width: 160px;
+            height: 80px;
+            background: #333;
+            border-radius: 8px;
+            position: absolute;
+        }
+
+        .rfid-reader::after {
+            content: '📡';
+            font-size: 2.5rem;
+            color: #f39c12;
+            z-index: 2;
+            position: relative;
+        }
+
+        .rfid-status {
+            margin-bottom: 25px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.waiting {
+            background: #f39c12;
+        }
+
+        .status-indicator.reading {
+            background: #27ae60;
+            animation: blink 0.5s infinite;
+        }
+
+        .status-indicator.error {
+            background: #e74c3c;
+        }
+
+        .rfid-instruction {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .rfid-card-demo {
+            width: 80px;
+            height: 50px;
+            background: white;
+            border-radius: 8px;
+            margin: 20px auto;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #f39c12;
+        }
+
+        .rfid-card-demo::before {
+            content: '';
+            width: 30px;
+            height: 20px;
+            background: #f39c12;
+            position: absolute;
+            top: 15px;
+            left: 25px;
+            border-radius: 3px;
+        }
+
+        .rfid-card-demo::after {
+            content: 'RFID';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .scan-animation {
+            animation: scanPulse 2s infinite;
+        }
+
+        .rfid-input-container {
+            margin: 20px 0;
+        }
+
+        .rfid-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            background: #f8f9fa;
+            font-family: monospace;
+            opacity: 0.5;
+            caret-color: transparent;
+        }
+
+        .rfid-input:focus {
+            outline: none;
+            border-color: #f39c12;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+            opacity: 1;
+        }
+
+        .rfid-help-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #666;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .debug-toggle {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes scanPulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 35px rgba(243, 156, 18, 0.4);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                margin: 10px;
+            }
+            
+            .illustration-section {
+                min-height: 200px;
+            }
+            
+            .login-section {
+                padding: 40px 30px;
+            }
+            
+            .desk-setup {
+                width: 200px;
+                height: 120px;
+            }
+
+            .rfid-reader {
+                width: 150px;
+                height: 90px;
+            }
+
+            .rfid-reader::before {
+                width: 120px;
+                height: 60px;
+            }
+
+            .rfid-reader::after {
+                font-size: 2rem;
+            }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            width: 40px;
+            height: 40px;
+            background: white;
+            transform: rotate(45deg);
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f39c12;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="illustration-section">
+            <div class="floating-shapes">
+                <div class="shape"></div>
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+            <div class="illustration">
+                <div class="desk-setup">
+                    <div class="plant">
+                        <div class="plant-pot"></div>
+                        <div class="plant-stem"></div>
+                        <div class="plant-leaves"></div>
+                    </div>
+                    <div class="books"></div>
+                    <div class="desk"></div>
+                    <div class="monitor"></div>
+                    <div class="person">
+                        <div class="person-head"></div>
+                        <div class="person-body"></div>
+                        <div class="person-arm"></div>
+                        <div class="person-legs"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-section">
+            <div class="login-header">
+                <h1 class="login-title">Selamat Datang!</h1>
+                <p class="login-subtitle">Silahkan masuk untuk memulai aplikasi.</p>
+            </div>
+
+            <div class="login-tabs">
+                <button class="tab-button active" onclick="switchTab('email')">
+                    ✉️ Email & Password
+                </button>
+                <button class="tab-button" onclick="switchTab('rfid')">
+                    📡 Kartu RFID
+                </button>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                Login berhasil! Mengarahkan ke dashboard...
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                Email atau password tidak valid. Silakan coba lagi.
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Sedang masuk...</p>
+            </div>
+
+            <!-- Email Login Form -->
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="Masukkan Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="password-container">
+                        <input type="password" id="password" class="form-input" placeholder="Masukkan Password" required>
+                        <button type="button" class="password-toggle" id="passwordToggle">👁</button>
+                    </div>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#" onclick="showAlert('Fitur lupa password akan segera tersedia!')">Lupa password?</a>
+                </div>
+
+                <button type="submit" class="login-button">Masuk</button>
+            </form>
+
+            <!-- RFID Login Form -->
+            <div id="rfidForm" class="login-form hidden">
+                <div class="rfid-container">
+                    <div class="rfid-reader" id="rfidReader">
+                    </div>
+                    
+                    <div class="rfid-status">
+                        <span class="status-indicator waiting" id="statusIndicator"></span>
+                        <span id="statusText">Siap membaca kartu RFID...</span>
+                    </div>
+                    
+                    <p class="rfid-instruction">
+                        Tempelkan kartu RFID Anda pada reader
+                    </p>
+                    
+                    <div class="rfid-input-container">
+                        <input type="text" 
+                               id="rfidInput" 
+                               class="rfid-input" 
+                               placeholder="Area scan RFID..."
+                               autocomplete="off"
+                               spellcheck="false">
+                        <div class="rfid-help-text">
+                            Pastikan kartu RFID sudah terdaftar dalam sistem
+                        </div>
+                    </div>
+                    
+                    <div class="rfid-card-demo"></div>
+                    
+                    <!-- Debug Panel -->
+                    <button class="debug-toggle" onclick="toggleDebug()">Toggle Debug</button>
+                    <div class="debug-info" id="debugInfo" style="display: none;">
+                        <strong>Debug Log:</strong><br>
+                        <div id="debugLog">RFID reader siap...<br></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signup-link">
+                Belum punya akun? <a href="daftar.html">Daftar</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // RFID Database dengan berbagai format ID yang mungkin
+        const rfidDatabase = {
+            // Format 10 digit
+            '3663030543': {
+                name: 'Ahmad Ramadhan',
+                email: 'admin@example.com',
+                role: 'admin'
+            },
+            // Format hex
+            'DA1B2C3F': {
+                name: 'Ahmad Ramadhan',
+                email: 'admin@example.com',
+                role: 'admin'
+            },
+            // Format dengan prefix/suffix
+            '3664637103': {
+                name: 'Siti Nurhaliza',
+                email: 'siti@example.com',
+                role: 'teacher'
+            },
+            'CARD789012': {
+                name: 'Budi Santoso',
+                email: 'budi@example.com',
+                role: 'student'
+            },
+            // Format 8 digit hex (umum untuk MIFARE)
+            'A1B2C3D4': {
+                name: 'Test User',
+                email: 'test@example.com',
+                role: 'student'
+            }
+        };
+
+        let currentTab = 'email';
+        let isRFIDReaderActive = false;
+        let rfidBuffer = '';
+        let rfidTimeout;
+        let lastScanTime = 0;
+        let scanCount = 0;
+        const SCAN_COOLDOWN = 2000; // 2 detik cooldown
+        const MIN_ID_LENGTH = 4; // Minimum panjang ID
+        const MAX_ID_LENGTH = 20; // Maximum panjang ID
+
+        // Debug logging
+        function debugLog(message) {
+            const debugDiv = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            debugDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            debugDiv.scrollTop = debugDiv.scrollHeight;
+            console.log(`[RFID DEBUG] ${message}`);
+        }
+
+        function toggleDebug() {
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Tab switching functionality
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide forms
+            const emailForm = document.getElementById('loginForm');
+            const rfidForm = document.getElementById('rfidForm');
+            
+            if (tab === 'email') {
+                emailForm.classList.remove('hidden');
+                rfidForm.classList.add('hidden');
+                stopRFIDReader();
+            } else {
+                emailForm.classList.add('hidden');
+                rfidForm.classList.remove('hidden');
+                startRFIDReader();
+            }
+            
+            // Clear any previous messages
+            hideMessages();
+        }
+
+        // Enhanced RFID Reader functionality
+        function startRFIDReader() {
+            isRFIDReaderActive = true;
+            rfidBuffer = '';
+            lastScanTime = 0;
+            scanCount = 0;
+            
+            updateRFIDStatus('waiting', 'Siap membaca kartu RFID...');
+            debugLog('RFID Reader diaktifkan');
+            
+            const rfidInput = document.getElementById('rfidInput');
+            rfidInput.value = '';
+            
+            // Focus dan setup listeners
+            setTimeout(() => {
+                rfidInput.focus();
+                setupRFIDListeners();
+            }, 100);
+        }
+
+        function stopRFIDReader() {
+            isRFIDReaderActive = false;
+            rfidBuffer = '';
+            
+            if (rfidTimeout) {
+                clearTimeout(rfidTimeout);
+                rfidTimeout = null;
+            }
+            
+            const rfidInput = document.getElementById('rfidInput');
+            rfidInput.value = '';
+            rfidInput.blur();
+            
+            debugLog('RFID Reader dinonaktifkan');
+        }
+
+        function setupRFIDListeners() {
+            const rfidInput = document.getElementById('rfidInput');
+            
+            // Hapus listener lama
+            rfidInput.onkeydown = null;
+            rfidInput.oninput = null;
+            rfidInput.onpaste = null;
+            
+            // Event untuk menangkap semua input
+            rfidInput.addEventListener('input', handleRFIDInput, false);
+            rfidInput.addEventListener('keydown', handleRFIDKeydown, false);
+            rfidInput.addEventListener('paste', handleRFIDPaste, false);
+            
+            // Auto-focus ketika kehilangan focus
+            rfidInput.addEventListener('blur', function() {
+                if (isRFIDReaderActive) {
+                    setTimeout(() => {
+                        if (isRFIDReaderActive) {
+                            rfidInput.focus();
+                            debugLog('Input refocused');
+                        }
+                    }, 100);
+                }
+            });
+
+            debugLog('RFID listeners setup complete');
+        }
+
+        function handleRFIDInput(event) {
+            if (!isRFIDReaderActive) return;
+
+            const value = event.target.value;
+            const currentTime = Date.now();
+            
+            debugLog(`Input detected: "${value}" (length: ${value.length})`);
+            
+            // Clear timeout yang ada
+            if (rfidTimeout) {
+                clearTimeout(rfidTimeout);
+            }
+            
+            // Update status ke reading
+            updateRFIDStatus('reading', 'Membaca kartu...');
+            
+            // Set timeout untuk memproses data
+            rfidTimeout = setTimeout(() => {
+                processRFIDData(value, currentTime);
+            }, 150); // Tunggu 150ms untuk memastikan semua data masuk
+        }
+
+        function handleRFIDKeydown(event) {
+            if (!isRFIDReaderActive) return;
+            
+            debugLog(`Key pressed: ${event.key} (code: ${event.keyCode})`);
+            
+            // Handle Enter key - banyak RFID reader mengirim Enter
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                event.preventDefault();
+                
+                if (rfidTimeout) {
+                    clearTimeout(rfidTimeout);
+                }
+                
+                const value = event.target.value.trim();
+                if (value.length > 0) {
+                    processRFIDData(value, Date.now());
+                }
+                return false;
+            }
+            
+            // Handle Tab key - beberapa reader menggunakan Tab
+            if (event.key === 'Tab' || event.keyCode === 9) {
+                event.preventDefault();
+                
+                if (rfidTimeout) {
+                    clearTimeout(rfidTimeout);
+                }
+                
+                const value = event.target.value.trim();
+                if (value.length > 0) {
+                    processRFIDData(value, Date.now());
+                }
+                return false;
+            }
+        }
+
+        function handleRFIDPaste(event) {
+            if (!isRFIDReaderActive) return;
+            
+            event.preventDefault();
+            const pastedData = (event.clipboardData || window.clipboardData).getData('text');
+            
+            debugLog(`Paste detected: "${pastedData}"`);
+            
+            if (pastedData.trim().length > 0) {
+                processRFIDData(pastedData.trim(), Date.now());
+            }
+        }
+
+        function processRFIDData(rawData, timestamp) {
+            if (!isRFIDReaderActive) return;
+            
+            // Cooldown check
+            if (timestamp - lastScanTime < SCAN_COOLDOWN) {
+                debugLog('Scan terlalu cepat, diabaikan (cooldown)');
+                updateRFIDStatus('waiting', 'Siap membaca kartu RFID...');
+                document.getElementById('rfidInput').value = '';
+                return;
+            }
+            
+            const cleanedData = cleanRFIDData(rawData);
+            debugLog(`Raw data: "${rawData}"`);
+            debugLog(`Cleaned data: "${cleanedData}"`);
+            
+            if (cleanedData.length < MIN_ID_LENGTH) {
+                debugLog(`Data terlalu pendek: ${cleanedData.length} < ${MIN_ID_LENGTH}`);
+                updateRFIDStatus('error', 'Data kartu tidak valid');
+                setTimeout(() => {
+                    updateRFIDStatus('waiting', 'Siap membaca kartu RFID...');
+                    document.getElementById('rfidInput').value = '';
+                }, 2000);
+                return;
+            }
+            
+            lastScanTime = timestamp;
+            scanCount++;
+            
+            debugLog(`Processing scan #${scanCount}: "${cleanedData}"`);
+            authenticateRFID(cleanedData);
+        }
+
+        function cleanRFIDData(data) {
+            // Hapus karakter non-alphanumeric dan spasi
+            let cleaned = data.replace(/[^a-zA-Z0-9]/g, '');
+            
+            // Jika terlalu panjang, ambil bagian yang mungkin adalah ID
+            if (cleaned.length > MAX_ID_LENGTH) {
+                // Coba ambil bagian tengah atau akhir yang mungkin ID yang valid
+                cleaned = cleaned.substring(0, MAX_ID_LENGTH);
+            }
+            
+            return cleaned.toUpperCase(); // Convert ke uppercase untuk konsistensi
+        }
+
+        function updateRFIDStatus(status, text) {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const reader = document.getElementById('rfidReader');
+            
+            // Remove all status classes
+            indicator.className = 'status-indicator';
+            reader.classList.remove('scan-animation');
+            
+            // Add new status
+            indicator.classList.add(status);
+            statusText.textContent = text;
+            
+            if (status === 'reading') {
+                reader.classList.add('scan-animation');
+            }
+            
+            debugLog(`Status update: ${status} - ${text}`);
+        }
+
+        function authenticateRFID(rfidCode) {
+            debugLog(`Authenticating RFID: "${rfidCode}"`);
+            
+            hideMessages();
+            document.getElementById('loading').style.display = 'block';
+            
+            // Clear input
+            document.getElementById('rfidInput').value = '';
+            
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                
+                // Cari di database dengan berbagai format
+                let userData = null;
+                let matchedKey = null;
+                
+                // Cek exact match
+                if (rfidDatabase[rfidCode]) {
+                    userData = rfidDatabase[rfidCode];
+                    matchedKey = rfidCode;
+                } else {
+                    // Cek partial match (untuk kasus format berbeda)
+                    for (const key in rfidDatabase) {
+                        if (key.includes(rfidCode) || rfidCode.includes(key)) {
+                            userData = rfidDatabase[key];
+                            matchedKey = key;
+                            debugLog(`Partial match found: "${rfidCode}" matches "${key}"`);
+                            break;
+                        }
+                    }
+                }
+                
+                if (userData) {
+                    // Success
+                    document.getElementById('successMessage').style.display = 'block';
+                    updateRFIDStatus('reading', `Selamat datang, ${userData.name}!`);
+                    debugLog(`Login successful for: ${userData.name} (matched: ${matchedKey})`);
+                    
+                    // Save login state
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', userData.email);
+                    localStorage.setItem('userName', userData.name);
+                    localStorage.setItem('userRole', userData.role); // Simpan role user
+                    localStorage.setItem('loginMethod', 'rfid');
+                    localStorage.setItem('rfidCode', matchedKey);
+                    sessionStorage.setItem('justLoggedIn', 'true');
+                    
+                    // Redirect berdasarkan role
+                    setTimeout(() => {
+                        if (userData.role === 'admin') {
+                            window.location.href = 'admin-dashboard.html';
+                        } else {
+                            window.location.href = 'dashboard.html';
+                        }
+                    }, 2000);
+                } else {
+                    // Error - RFID tidak ditemukan
+                    document.getElementById('errorMessage').textContent = 'Kartu RFID tidak terdaftar dalam sistem.';
+                    document.getElementById('errorMessage').style.display = 'block';
+                    updateRFIDStatus('error', 'Kartu tidak dikenali');
+                    
+                    debugLog(`RFID not found: "${rfidCode}"`);
+                    debugLog(`Available codes: ${Object.keys(rfidDatabase).join(', ')}`);
+                    
+                    // Reset setelah 3 detik
+                    setTimeout(() => {
+                        updateRFIDStatus('waiting', 'Siap membaca kartu RFID...');
+                        hideMessages();
+                        
+                        // Refocus input
+                        const rfidInput = document.getElementById('rfidInput');
+                        if (isRFIDReaderActive) {
+                            rfidInput.focus();
+                        }
+                    }, 3000);
+                }
+            }, 1000);
+        }
+
+        // Password toggle functionality
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordInput = document.getElementById('password');
+
+        passwordToggle.addEventListener('click', function() {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.textContent = '👁';
+            }
+        });
+
+        // Email form submission
+        const loginForm = document.getElementById('loginForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const loading = document.getElementById('loading');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Hide previous messages
+            hideMessages();
+            loading.style.display = 'block';
+
+            // Simulate login process
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                // Check credentials (demo purposes - admin@example.com / 12345)
+                if (email === 'admin@example.com' && password === '12345') {
+                    successMessage.style.display = 'block';
+                    
+                    // Save login state
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userName', 'Ahmad Ramadhan');
+                    localStorage.setItem('userRole', 'admin'); // Simpan role admin
+                    localStorage.setItem('loginMethod', 'email');
+                    sessionStorage.setItem('justLoggedIn', 'true');
+                    
+                    // Redirect to admin dashboard after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 2000);
+                } else {
+                    errorMessage.textContent = 'Email atau password tidak valid. Silakan coba lagi.';
+                    errorMessage.style.display = 'block';
+                }
+            }, 1500);
+        });
+
+        function hideMessages() {
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            loading.style.display = 'none';
+        }
+
+        // Alert function
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Check if already logged in
+        window.addEventListener('load', function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                // Redirect berdasarkan role yang tersimpan
+                const userRole = localStorage.getItem('userRole');
+                if (userRole === 'admin') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
+                return;
+            }
+
+            // Add smooth animations on load
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            container.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+            
+            debugLog('Page loaded, RFID system ready');
+        });
+
+        // Add hover effects to form inputs
+        const formInputs = document.querySelectorAll('.form-input');
+        formInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+                this.parentElement.style.transition = 'transform 0.3s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            stopRFIDReader();
+        });
+
+        // Prevent form submission on RFID tab
+        document.addEventListener('keydown', function(e) {
+            if (currentTab === 'rfid' && e.key === 'Enter' && e.target.id !== 'rfidInput') {
+                e.preventDefault();
+            }
+        });
+
+        // Auto-focus RFID input when RFID tab is active
+        document.addEventListener('click', function(e) {
+            if (currentTab === 'rfid' && isRFIDReaderActive) {
+                const rfidInput = document.getElementById('rfidInput');
+                if (e.target !== rfidInput) {
+                    setTimeout(() => {
+                        rfidInput.focus();
+                    }, 10);
+                }
+            }
+        });
+
+        // Test function untuk debugging (bisa dipanggil dari console)
+        window.testRFID = function(testCode) {
+            if (currentTab === 'rfid' && isRFIDReaderActive) {
+                debugLog(`Manual test with code: ${testCode}`);
+                processRFIDData(testCode, Date.now());
+            } else {
+                console.log('Switch to RFID tab first');
+            }
+        };
+    </script>
+</body>
+</html>

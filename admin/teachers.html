@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Guru - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            transition: grid-template-columns 0.3s ease;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            position: relative;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .sidebar-nav {
+            padding: 16px 0;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            padding: 8px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-items {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 2px 12px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 16px 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f1f5f9;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 24px;
+            flex: 1;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .stat-card.primary::before {
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        }
+
+        .stat-card.success::before {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .stat-card.warning::before {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+
+        .stat-card.danger::before {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .stat-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .stat-icon {
+            width: 24px;
+            height: 24px;
+            padding: 6px;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .stat-icon.primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .stat-icon.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .stat-icon.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .stat-icon.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        /* Main Card */
+        .main-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f1f5f9;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 24px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+            flex: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Search and Filter */
+        .search-filter-bar {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #94a3b8;
+        }
+
+        .filter-select {
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-table td {
+            padding: 16px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .data-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.active {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-badge.inactive {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        /* Avatar */
+        .teacher-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .teacher-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .teacher-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+
+        .teacher-details p {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px 8px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn.view {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .action-btn.edit {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .action-btn.delete {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Pagination */
+        .pagination {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .pagination-info {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .pagination-btn {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .modal-close:hover {
+            background: #f1f5f9;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 0;
+                height: 100vh;
+                transition: left 0.3s ease;
+                z-index: 200;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-bar {
+                padding: 12px 16px;
+            }
+
+            .content-area {
+                padding: 16px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 12px 8px;
+            }
+        }
+
+        /* Animation */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: slideIn 0.4s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🎓</div>
+                    <div class="logo-text">EduAdmin</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Dashboard</div>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="../admin-dashboard.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                                </svg>
+                                <span>Overview</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Manajemen</div>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="students.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-6h3v-2c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2v2h3v6H4zm16-10c.83 0 1.5-.67 1.5-1.5S20.83 5 20 5s-1.5.67-1.5 1.5S19.17 8 20 8z" />
+                                </svg>
+                                <span>Siswa</span>
+                                <span class="nav-badge">1,234</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                </svg>
+                                <span>Guru</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="classes.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z" />
+                                </svg>
+                                <span>Kelas</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                                </svg>
+                                <span>Mata Pelajaran</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Akademik</div>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="attendance.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" />
+                                </svg>
+                                <span>Absensi</span>
+                                <span class="nav-badge">5</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z" />
+                                </svg>
+                                <span>Nilai</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                                </svg>
+                                <span>Jadwal</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" />
+                                </svg>
+                                <span>Ujian</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Sistem</div>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                                <span>Pengumuman</span>
+                                <span class="nav-badge">3</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z" />
+                                </svg>
+                                <span>Laporan</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
+                                </svg>
+                                <span>Pengaturan</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                        </svg>
+                    </button>
+                    <div>
+                        <h1 class="page-title">Manajemen Guru</h1>
+                        <div class="breadcrumb">
+                            <span>Admin</span>
+                            <span>›</span>
+                            <span>Manajemen</span>
+                            <span>›</span>
+                            <span>Guru</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top-bar-right">
+                    <a href="../admin-dashboard.html" class="back-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                        </svg>
+                        Kembali
+                    </a>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area animate-in">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-header">
+                            <h3 class="stat-title">Total Guru</h3>
+                            <div class="stat-icon primary">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">89</div>
+                        <div class="stat-change">
+                            <span>+3 guru baru bulan ini</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card success">
+                        <div class="stat-header">
+                            <h3 class="stat-title">Guru Aktif</h3>
+                            <div class="stat-icon success">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">85</div>
+                        <div class="stat-change">
+                            <span>95.5% dari total guru</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card warning">
+                        <div class="stat-header">
+                            <h3 class="stat-title">Menunggu Verifikasi</h3>
+                            <div class="stat-icon warning">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">4</div>
+                        <div class="stat-change">
+                            <span>Perlu ditinjau</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card danger">
+                        <div class="stat-header">
+                            <h3 class="stat-title">Tidak Aktif</h3>
+                            <div class="stat-icon danger">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">0</div>
+                        <div class="stat-change">
+                            <span>Semua guru aktif</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Table Card -->
+                <div class="main-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Daftar Guru</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-secondary" onclick="exportData()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z" />
+                                </svg>
+                                Export
+                            </button>
+                            <button class="btn btn-primary" onclick="openAddTeacherModal()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                                </svg>
+                                Tambah Guru
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="search-filter-bar">
+                        <div class="search-container">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                            </svg>
+                            <input type="text" class="search-input"
+                                placeholder="Cari nama guru, NIP, atau mata pelajaran..." id="searchInput"
+                                onkeyup="searchTeachers()">
+                        </div>
+
+                        <select class="filter-select" id="statusFilter" onchange="filterTeachers()">
+                            <option value="">Semua Status</option>
+                            <option value="active">Aktif</option>
+                            <option value="inactive">Tidak Aktif</option>
+                            <option value="pending">Pending</option>
+                        </select>
+
+                        <select class="filter-select" id="subjectFilter" onchange="filterTeachers()">
+                            <option value="">Semua Mata Pelajaran</option>
+                            <option value="matematika">Matematika</option>
+                            <option value="bahasa-indonesia">Bahasa Indonesia</option>
+                            <option value="bahasa-inggris">Bahasa Inggris</option>
+                            <option value="fisika">Fisika</option>
+                            <option value="kimia">Kimia</option>
+                            <option value="biologi">Biologi</option>
+                            <option value="sejarah">Sejarah</option>
+                            <option value="geografi">Geografi</option>
+                            <option value="ekonomi">Ekonomi</option>
+                            <option value="sosiologi">Sosiologi</option>
+                        </select>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="teachersTable">
+                            <thead>
+                                <tr>
+                                    <th>Guru</th>
+                                    <th>NIP</th>
+                                    <th>Mata Pelajaran</th>
+                                    <th>Kelas Diampu</th>
+                                    <th>Status</th>
+                                    <th>Bergabung</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teachersTableBody">
+                                <!-- Data akan diisi oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            Menampilkan <span id="showingStart">1</span>-<span id="showingEnd">10</span> dari <span
+                                id="totalTeachers">89</span> guru
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn" id="prevBtn" onclick="changePage(-1)">‹ Sebelumnya</button>
+                            <button class="pagination-btn active" onclick="goToPage(1)">1</button>
+                            <button class="pagination-btn" onclick="goToPage(2)">2</button>
+                            <button class="pagination-btn" onclick="goToPage(3)">3</button>
+                            <button class="pagination-btn" id="nextBtn" onclick="changePage(1)">Selanjutnya ›</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Teacher Modal -->
+    <div class="modal-overlay" id="addTeacherModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Guru Baru</h3>
+                <button class="modal-close" onclick="closeModal('addTeacherModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addTeacherForm">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap *</label>
+                        <input type="text" class="form-input" id="teacherName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">NIP *</label>
+                        <input type="text" class="form-input" id="teacherNIP" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input type="email" class="form-input" id="teacherEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">No. Telepon</label>
+                        <input type="tel" class="form-input" id="teacherPhone">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mata Pelajaran *</label>
+                        <select class="form-select" id="teacherSubject" required>
+                            <option value="">Pilih Mata Pelajaran</option>
+                            <option value="matematika">Matematika</option>
+                            <option value="bahasa-indonesia">Bahasa Indonesia</option>
+                            <option value="bahasa-inggris">Bahasa Inggris</option>
+                            <option value="fisika">Fisika</option>
+                            <option value="kimia">Kimia</option>
+                            <option value="biologi">Biologi</option>
+                            <option value="sejarah">Sejarah</option>
+                            <option value="geografi">Geografi</option>
+                            <option value="ekonomi">Ekonomi</option>
+                            <option value="sosiologi">Sosiologi</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Alamat</label>
+                        <input type="text" class="form-input" id="teacherAddress">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="teacherStatus">
+                            <option value="active">Aktif</option>
+                            <option value="pending">Pending</option>
+                            <option value="inactive">Tidak Aktif</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addTeacherModal')">Batal</button>
+                <button class="btn btn-primary" onclick="saveTeacher()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Teacher Modal -->
+    <div class="modal-overlay" id="editTeacherModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Data Guru</h3>
+                <button class="modal-close" onclick="closeModal('editTeacherModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editTeacherForm">
+                    <input type="hidden" id="editTeacherId">
+
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap *</label>
+                        <input type="text" class="form-input" id="editTeacherName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">NIP *</label>
+                        <input type="text" class="form-input" id="editTeacherNIP" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input type="email" class="form-input" id="editTeacherEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">No. Telepon</label>
+                        <input type="tel" class="form-input" id="editTeacherPhone">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mata Pelajaran *</label>
+                        <select class="form-select" id="editTeacherSubject" required>
+                            <option value="">Pilih Mata Pelajaran</option>
+                            <option value="matematika">Matematika</option>
+                            <option value="bahasa-indonesia">Bahasa Indonesia</option>
+                            <option value="bahasa-inggris">Bahasa Inggris</option>
+                            <option value="fisika">Fisika</option>
+                            <option value="kimia">Kimia</option>
+                            <option value="biologi">Biologi</option>
+                            <option value="sejarah">Sejarah</option>
+                            <option value="geografi">Geografi</option>
+                            <option value="ekonomi">Ekonomi</option>
+                            <option value="sosiologi">Sosiologi</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Alamat</label>
+                        <input type="text" class="form-input" id="editTeacherAddress">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="editTeacherStatus">
+                            <option value="active">Aktif</option>
+                            <option value="pending">Pending</option>
+                            <option value="inactive">Tidak Aktif</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('editTeacherModal')">Batal</button>
+                <button class="btn btn-primary" onclick="updateTeacher()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let sidebarOpen = false;
+        let currentPage = 1;
+        let itemsPerPage = 10;
+        let allTeachers = [];
+        let filteredTeachers = [];
+
+        // Sample teacher data
+        const teachersData = [
+            {
+                id: 1,
+                name: "Dr. Ahmad Wijaya, M.Pd",
+                nip: "196501011990031001",
+                email: "ahmad.wijaya@school.edu",
+                phone: "081234567890",
+                subject: "Matematika",
+                classes: ["X IPA 1", "X IPA 2", "XI IPA 1"],
+                status: "active",
+                joinDate: "2020-07-15",
+                address: "Jl. Pendidikan No. 123, Jakarta"
+            },
+            {
+                id: 2,
+                name: "Siti Nurhaliza, S.Pd",
+                nip: "197203151995122001",
+                email: "siti.nurhaliza@school.edu",
+                phone: "081234567891",
+                subject: "Bahasa Indonesia",
+                classes: ["X IPS 1", "X IPS 2", "XI Bahasa"],
+                status: "active",
+                joinDate: "2019-08-20",
+                address: "Jl. Sastra No. 456, Jakarta"
+            },
+            {
+                id: 3,
+                name: "Budi Santoso, M.Si",
+                nip: "198005101998031002",
+                email: "budi.santoso@school.edu",
+                phone: "081234567892",
+                subject: "Fisika",
+                classes: ["XI IPA 1", "XI IPA 2", "XII IPA 1"],
+                status: "active",
+                joinDate: "2021-01-10",
+                address: "Jl. Sains No. 789, Jakarta"
+            },
+            {
+                id: 4,
+                name: "Rina Wati, S.Pd",
+                nip: "198512201999032001",
+                email: "rina.wati@school.edu",
+                phone: "081234567893",
+                subject: "Bahasa Inggris",
+                classes: ["X IPA 1", "X IPS 1", "XI IPA 1"],
+                status: "active",
+                joinDate: "2020-03-15",
+                address: "Jl. Bahasa No. 321, Jakarta"
+            },
+            {
+                id: 5,
+                name: "Doni Pratama, M.Pd",
+                nip: "197908151998031003",
+                email: "doni.pratama@school.edu",
+                phone: "081234567894",
+                subject: "Sejarah",
+                classes: ["X IPS 1", "X IPS 2", "XI IPS 1"],
+                status: "pending",
+                joinDate: "2023-09-01",
+                address: "Jl. Sejarah No. 654, Jakarta"
+            },
+            {
+                id: 6,
+                name: "Maya Sari, S.Si",
+                nip: "198703201999032002",
+                email: "maya.sari@school.edu",
+                phone: "081234567895",
+                subject: "Kimia",
+                classes: ["XI IPA 1", "XI IPA 2", "XII IPA 2"],
+                status: "active",
+                joinDate: "2021-07-20",
+                address: "Jl. Kimia No. 987, Jakarta"
+            },
+            {
+                id: 7,
+                name: "Reza Firmansyah, M.Pd",
+                nip: "198001101997031001",
+                email: "reza.firmansyah@school.edu",
+                phone: "081234567896",
+                subject: "Geografi",
+                classes: ["X IPS 1", "XI IPS 1", "XI IPS 2"],
+                status: "active",
+                joinDate: "2019-02-14",
+                address: "Jl. Geografi No. 147, Jakarta"
+            },
+            {
+                id: 8,
+                name: "Indah Permata, S.Pd",
+                nip: "198906151998032001",
+                email: "indah.permata@school.edu",
+                phone: "081234567897",
+                subject: "Biologi",
+                classes: ["X IPA 1", "XI IPA 1", "XII IPA 1"],
+                status: "active",
+                joinDate: "2020-11-30",
+                address: "Jl. Biologi No. 258, Jakarta"
+            },
+            {
+                id: 9,
+                name: "Fajar Nugroho, M.Pd",
+                nip: "197512201996031001",
+                email: "fajar.nugroho@school.edu",
+                phone: "081234567898",
+                subject: "Ekonomi",
+                classes: ["X IPS 1", "X IPS 2", "XI IPS 1"],
+                status: "pending",
+                joinDate: "2023-08-15",
+                address: "Jl. Ekonomi No. 369, Jakarta"
+            },
+            {
+                id: 10,
+                name: "Lisa Andriani, S.Sos",
+                nip: "198204301999032003",
+                email: "lisa.andriani@school.edu",
+                phone: "081234567899",
+                subject: "Sosiologi",
+                classes: ["XI IPS 1", "XI IPS 2", "XII IPS 1"],
+                status: "active",
+                joinDate: "2021-05-12",
+                address: "Jl. Sosiologi No. 741, Jakarta"
+            }
+        ];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            checkAuthentication();
+            initializeData();
+            renderTeachers();
+            animateElements();
+        });
+
+        // Authentication check
+        function checkAuthentication() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                alert('Anda harus login sebagai admin terlebih dahulu!');
+                window.location.href = '../index.html';
+                return;
+            }
+
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail !== 'admin@example.com') {
+                alert('Anda tidak memiliki akses ke halaman ini!');
+                window.location.href = '../dashboard.html';
+                return;
+            }
+        }
+
+        // Initialize data
+        function initializeData() {
+            allTeachers = [...teachersData];
+            filteredTeachers = [...allTeachers];
+        }
+
+        // Render teachers table
+        function renderTeachers() {
+            const tbody = document.getElementById('teachersTableBody');
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const teachersToShow = filteredTeachers.slice(startIndex, endIndex);
+
+            tbody.innerHTML = '';
+
+            teachersToShow.forEach(teacher => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="teacher-info">
+                            <div class="teacher-avatar">${teacher.name.charAt(0)}</div>
+                            <div class="teacher-details">
+                                <h4>${teacher.name}</h4>
+                                <p>${teacher.email}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${teacher.nip}</td>
+                    <td>${teacher.subject}</td>
+                    <td>${teacher.classes.join(', ')}</td>
+                    <td>
+                        <span class="status-badge ${teacher.status}">
+                            ${teacher.status === 'active' ? '● Aktif' :
+                        teacher.status === 'pending' ? '● Pending' : '● Tidak Aktif'}
+                        </span>
+                    </td>
+                    <td>${formatDate(teacher.joinDate)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn view" onclick="viewTeacher(${teacher.id})" title="Lihat Detail">
+                                👁️
+                            </button>
+                            <button class="action-btn edit" onclick="editTeacher(${teacher.id})" title="Edit">
+                                ✏️
+                            </button>
+                            <button class="action-btn delete" onclick="deleteTeacher(${teacher.id})" title="Hapus">
+                                🗑️
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            updatePagination();
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('id-ID', options);
+        }
+
+        // Update pagination
+        function updatePagination() {
+            const totalItems = filteredTeachers.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const startItem = (currentPage - 1) * itemsPerPage + 1;
+            const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+
+            document.getElementById('showingStart').textContent = startItem;
+            document.getElementById('showingEnd').textContent = endItem;
+            document.getElementById('totalTeachers').textContent = totalItems;
+
+            // Update pagination buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+
+            // Update page number buttons (simplified)
+            const paginationControls = document.querySelector('.pagination-controls');
+            const pageButtons = paginationControls.querySelectorAll('.pagination-btn:not(#prevBtn):not(#nextBtn)');
+
+            pageButtons.forEach((btn, index) => {
+                const pageNum = index + 1;
+                btn.classList.toggle('active', pageNum === currentPage);
+                btn.style.display = pageNum <= totalPages ? 'block' : 'none';
+            });
+        }
+
+        // Search teachers
+        function searchTeachers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const subjectFilter = document.getElementById('subjectFilter').value;
+
+            filteredTeachers = allTeachers.filter(teacher => {
+                const matchesSearch = teacher.name.toLowerCase().includes(searchTerm) ||
+                    teacher.nip.toLowerCase().includes(searchTerm) ||
+                    teacher.subject.toLowerCase().includes(searchTerm) ||
+                    teacher.email.toLowerCase().includes(searchTerm);
+
+                const matchesStatus = !statusFilter || teacher.status === statusFilter;
+                const matchesSubject = !subjectFilter || teacher.subject.toLowerCase().replace(/\s+/g, '-') === subjectFilter;
+
+                return matchesSearch && matchesStatus && matchesSubject;
+            });
+
+            currentPage = 1;
+            renderTeachers();
+        }
+
+        // Filter teachers
+        function filterTeachers() {
+            searchTeachers(); // Use the same logic as search
+        }
+
+        // Pagination functions
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredTeachers.length / itemsPerPage);
+            const newPage = currentPage + direction;
+
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                renderTeachers();
+            }
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredTeachers.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                renderTeachers();
+            }
+        }
+
+        // Modal functions
+        function openAddTeacherModal() {
+            document.getElementById('addTeacherModal').classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+
+            // Reset form if it's add modal
+            if (modalId === 'addTeacherModal') {
+                document.getElementById('addTeacherForm').reset();
+            }
+        }
+
+        // Teacher CRUD operations
+        function saveTeacher() {
+            const form = document.getElementById('addTeacherForm');
+            const formData = new FormData(form);
+
+            const newTeacher = {
+                id: allTeachers.length + 1,
+                name: document.getElementById('teacherName').value,
+                nip: document.getElementById('teacherNIP').value,
+                email: document.getElementById('teacherEmail').value,
+                phone: document.getElementById('teacherPhone').value,
+                subject: document.getElementById('teacherSubject').value,
+                classes: [], // Will be assigned later
+                status: document.getElementById('teacherStatus').value,
+                joinDate: new Date().toISOString().split('T')[0],
+                address: document.getElementById('teacherAddress').value
+            };
+
+            // Validate required fields
+            if (!newTeacher.name || !newTeacher.nip || !newTeacher.email || !newTeacher.subject) {
+                showToast('Mohon lengkapi semua field yang wajib diisi!', 'error');
+                return;
+            }
+
+            // Check if NIP already exists
+            if (allTeachers.some(teacher => teacher.nip === newTeacher.nip)) {
+                showToast('NIP sudah terdaftar!', 'error');
+                return;
+            }
+
+            // Check if email already exists
+            if (allTeachers.some(teacher => teacher.email === newTeacher.email)) {
+                showToast('Email sudah terdaftar!', 'error');
+                return;
+            }
+
+            allTeachers.push(newTeacher);
+            filteredTeachers = [...allTeachers];
+            renderTeachers();
+            closeModal('addTeacherModal');
+            showToast('Guru berhasil ditambahkan!', 'success');
+        }
+
+        function viewTeacher(id) {
+            const teacher = allTeachers.find(t => t.id === id);
+            if (teacher) {
+                alert(`Detail Guru:\n\nNama: ${teacher.name}\nNIP: ${teacher.nip}\nEmail: ${teacher.email}\nTelepon: ${teacher.phone || 'Tidak ada'}\nMata Pelajaran: ${teacher.subject}\nKelas: ${teacher.classes.join(', ')}\nStatus: ${teacher.status}\nBergabung: ${formatDate(teacher.joinDate)}\nAlamat: ${teacher.address || 'Tidak ada'}`);
+            }
+        }
+
+        function editTeacher(id) {
+            const teacher = allTeachers.find(t => t.id === id);
+            if (teacher) {
+                // Populate edit form
+                document.getElementById('editTeacherId').value = teacher.id;
+                document.getElementById('editTeacherName').value = teacher.name;
+                document.getElementById('editTeacherNIP').value = teacher.nip;
+                document.getElementById('editTeacherEmail').value = teacher.email;
+                document.getElementById('editTeacherPhone').value = teacher.phone || '';
+                document.getElementById('editTeacherSubject').value = teacher.subject.toLowerCase().replace(/\s+/g, '-');
+                document.getElementById('editTeacherAddress').value = teacher.address || '';
+                document.getElementById('editTeacherStatus').value = teacher.status;
+
+                // Show modal
+                document.getElementById('editTeacherModal').classList.add('show');
+            }
+        }
+
+        function updateTeacher() {
+            const teacherId = parseInt(document.getElementById('editTeacherId').value);
+            const teacherIndex = allTeachers.findIndex(t => t.id === teacherId);
+
+            if (teacherIndex !== -1) {
+                const updatedTeacher = {
+                    ...allTeachers[teacherIndex],
+                    name: document.getElementById('editTeacherName').value,
+                    nip: document.getElementById('editTeacherNIP').value,
+                    email: document.getElementById('editTeacherEmail').value,
+                    phone: document.getElementById('editTeacherPhone').value,
+                    subject: document.getElementById('editTeacherSubject').options[document.getElementById('editTeacherSubject').selectedIndex].text,
+                    address: document.getElementById('editTeacherAddress').value,
+                    status: document.getElementById('editTeacherStatus').value
+                };
+
+                // Validate required fields
+                if (!updatedTeacher.name || !updatedTeacher.nip || !updatedTeacher.email || !updatedTeacher.subject) {
+                    showToast('Mohon lengkapi semua field yang wajib diisi!', 'error');
+                    return;
+                }
+
+                // Check if NIP already exists (excluding current teacher)
+                if (allTeachers.some(teacher => teacher.nip === updatedTeacher.nip && teacher.id !== teacherId)) {
+                    showToast('NIP sudah terdaftar!', 'error');
+                    return;
+                }
+
+                // Check if email already exists (excluding current teacher)
+                if (allTeachers.some(teacher => teacher.email === updatedTeacher.email && teacher.id !== teacherId)) {
+                    showToast('Email sudah terdaftar!', 'error');
+                    return;
+                }
+
+                allTeachers[teacherIndex] = updatedTeacher;
+                filteredTeachers = [...allTeachers];
+                renderTeachers();
+                closeModal('editTeacherModal');
+                showToast('Data guru berhasil diupdate!', 'success');
+            }
+        }
+
+        function deleteTeacher(id) {
+            const teacher = allTeachers.find(t => t.id === id);
+            if (teacher && confirm(`Apakah Anda yakin ingin menghapus guru ${teacher.name}?`)) {
+                allTeachers = allTeachers.filter(t => t.id !== id);
+                filteredTeachers = [...allTeachers];
+                renderTeachers();
+                showToast('Guru berhasil dihapus!', 'success');
+            }
+        }
+
+        // Export data
+        function exportData() {
+            const csvContent = "data:text/csv;charset=utf-8,"
+                + "Nama,NIP,Email,Telepon,Mata Pelajaran,Status,Tanggal Bergabung\n"
+                + filteredTeachers.map(teacher =>
+                    `"${teacher.name}","${teacher.nip}","${teacher.email}","${teacher.phone || ''}","${teacher.subject}","${teacher.status}","${teacher.joinDate}"`
+                ).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "data_guru.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('Data guru berhasil diekspor!', 'success');
+        }
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebarOpen = !sidebarOpen;
+
+            if (sidebarOpen) {
+                sidebar.classList.add('open');
+            } else {
+                sidebar.classList.remove('open');
+            }
+        }
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: { bg: '#d1fae5', border: '#10b981', text: '#059669' },
+                error: { bg: '#fee2e2', border: '#ef4444', text: '#dc2626' },
+                warning: { bg: '#fef3c7', border: '#f59e0b', text: '#d97706' },
+                info: { bg: '#dbeafe', border: '#3b82f6', text: '#1d4ed8' }
+            };
+
+            const color = colors[type];
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${color.bg};
+                border: 1px solid ${color.border};
+                color: ${color.text};
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+            `;
+            toast.textContent = message;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+            }, 100);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    if (toast.parentElement) toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Animate elements
+        function animateElements() {
+            const elements = document.querySelectorAll('.stat-card, .main-card');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+
+                setTimeout(() => {
+                    element.style.transition = 'all 0.6s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.classList.remove('show');
+            }
+        });
+
+        // Responsive handling
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 1024 && sidebarOpen) {
+                toggleSidebar();
+            }
+        });
+
+        console.log('✨ Teachers management page loaded successfully!');
+    </script>
+</body>
+
+</html>

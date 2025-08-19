@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akun - Sistem Sekolah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            background: #f8f9fa;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 100px;
+            padding-top: 30px;
+        }
+
+        .profile-card {
+            background: white;
+            margin: 0 30px 20px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            position: relative;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 5;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            transform: translateX(-2px) scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .back-icon {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 15px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .edit-avatar-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            background: #ff9800;
+            border-radius: 50%;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .edit-avatar-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .edit-icon {
+            width: 14px;
+            height: 14px;
+            fill: white;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .content-wrapper {
+            padding-top: 10px;
+        }
+
+        .menu-section {
+            background: white;
+            margin: 0 30px 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            padding: 20px 25px 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-top: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .menu-item:first-of-type {
+            border-top: none;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+            transform: translateX(2px);
+        }
+
+        .menu-item:active {
+            transform: translateX(2px) scale(0.98);
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .menu-icon.profile { fill: #2196f3; }
+        .menu-icon.security { fill: #4caf50; }
+        .menu-icon.notifications { fill: #ff9800; }
+        .menu-icon.help { fill: #9c27b0; }
+        .menu-icon.about { fill: #607d8b; }
+        .menu-icon.logout { fill: #f44336; }
+
+        .menu-content {
+            flex-grow: 1;
+        }
+
+        .menu-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: #333;
+        }
+
+        .menu-subtitle {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .menu-arrow {
+            width: 16px;
+            height: 16px;
+            fill: #ccc;
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+
+        .menu-item:hover .menu-arrow {
+            fill: #666;
+            transform: translateX(2px);
+        }
+
+        .stats-overview {
+            background: white;
+            margin: 0 30px 20px;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0 25px;
+            box-shadow: 0 -2px 20px rgba(0,0,0,0.1);
+            z-index: 20;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #666;
+        }
+
+        .nav-item.active {
+            color: #ff9800;
+        }
+
+        .nav-item:hover {
+            opacity: 0.7;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-confirm {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: #d32f2f;
+        }
+
+        .version-info {
+            background: white;
+            margin: 0 30px 20px;
+            border-radius: 15px;
+            padding: 20px 25px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .version-info h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .version-info p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .coming-soon {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: #ffa726;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .profile-card, .menu-section, .stats-overview, .version-info {
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="profile-card">
+                <div class="back-button" onclick="goBack()">
+                    <svg class="back-icon" viewBox="0 0 24 24">
+                        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
+                    </svg>
+                </div>
+                <div class="profile-header">
+                    <div class="profile-avatar-large" id="userAvatarLarge">
+                        A
+                        <div class="edit-avatar-btn" onclick="editAvatar()">
+                            <svg class="edit-icon" viewBox="0 0 24 24">
+                                <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="profile-name" id="userNameLarge">Ahmad Ramadhan</div>
+                    <div class="profile-email" id="userEmailLarge">ahmad.ramadhan@sekolah.id</div>
+                    <div class="profile-role">Siswa Kelas XII IPA 1</div>
+                </div>
+            </div>
+
+            <div class="stats-overview">
+                <h3 class="stats-title">Ringkasan Aktivitas</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalHadir">92</div>
+                        <div class="stat-label">Total Kehadiran</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalTugas">15</div>
+                        <div class="stat-label">Tugas Selesai</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="rataRata">85.5</div>
+                        <div class="stat-label">Rata-rata Nilai</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="pencapaian">7</div>
+                        <div class="stat-label">Pencapaian</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="section-title">Informasi Pribadi</div>
+                <div class="menu-item" onclick="editProfile()">
+                    <svg class="menu-icon profile" viewBox="0 0 24 24">
+                        <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                    </svg>
+                    <div class="menu-content">
+                        <div class="menu-title">Edit Profil</div>
+                        <div class="menu-subtitle">Ubah nama, email, dan info pribadi</div>
+                    </div>
+                    <svg class="menu-arrow" viewBox="0 0 24 24">
+                        <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                    </svg>
+                </div>
+                <div class="menu-item" onclick="changePassword()">
+                    <svg class="menu-icon security" viewBox="0 0 24 24">
+                        <path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"/>
+                    </svg>
+                    <div class="menu-content">
+                        <div class="menu-title">Ubah Password</div>
+                        <div class="menu-subtitle">Perbarui kata sandi akun Anda</div>
+                    </div>
+                    <svg class="menu-arrow" viewBox="0 0 24 24">
+                        <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="section-title">Pengaturan</div>
+                <div class="menu-item" onclick="notificationSettings()">
+                    <svg class="menu-icon notifications" viewBox="0 0 24 24">
+                        <path d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21"/>
+                    </svg>
+                    <div class="menu-content">
+                        <div class="menu-title">Notifikasi</div>
+                        <div class="menu-subtitle">Atur preferensi notifikasi</div>
+                    </div>
+                    <svg class="menu-arrow" viewBox="0 0 24 24">
+                        <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="section-title">Bantuan</div>
+                <div class="menu-item" onclick="helpCenter()">
+                    <svg class="menu-icon help" viewBox="0 0 24 24">
+                        <path d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z"/>
+                    </svg>
+                    <div class="menu-content">
+                        <div class="menu-title">Pusat Bantuan</div>
+                        <div class="menu-subtitle">FAQ dan panduan penggunaan</div>
+                    </div>
+                    <svg class="menu-arrow" viewBox="0 0 24 24">
+                        <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-item" onclick="showLogoutModal()" style="border-top: none;">
+                    <svg class="menu-icon logout" viewBox="0 0 24 24">
+                        <path d="M17,7L15.59,8.41L18.17,11H8V13H18.17L15.59,15.59L17,17L22,12L17,7M4,5H12V3H4A2,2 0 0,0 2,5V19A2,2 0 0,0 4,21H12V19H4V5Z"/>
+                    </svg>
+                    <div class="menu-content">
+                        <div class="menu-title">Keluar</div>
+                        <div class="menu-subtitle">Logout dari akun Anda</div>
+                    </div>
+                    <svg class="menu-arrow" viewBox="0 0 24 24">
+                        <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="version-info">
+                <h4>Sistem Sekolah v2.1.0</h4>
+                <p>Dikembangkan dengan ❤️ untuk kemajuan pendidikan Indonesia</p>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <a href="dashboard.html" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M10,20v-6h4v6h5v-8h3L12,3L2,12h3v8z"/>
+                    </svg>
+                    <div class="nav-label">Beranda</div>
+                </a>
+                <div class="nav-item" onclick="navigateToAnnouncements()">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M19,19H5V5H19V19Z"/>
+                    </svg>
+                    <div class="nav-label">Pengumuman</div>
+                </div>
+                <div class="nav-item" onclick="navigateToSettings()">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                    </svg>
+                    <div class="nav-label">Setting</div>
+                </div>
+                <div class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,13A1.5,1.5 0 0,1 10.5,11.5A1.5,1.5 0 0,1 12,10A1.5,1.5 0 0,1 13.5,11.5A1.5,1.5 0 0,1 12,13M12,7.5C9.5,7.5 7.5,9.5 7.5,12C7.5,14.5 9.5,16.5 12,16.5C14.5,16.5 16.5,14.5 16.5,12C16.5,9.5 14.5,7.5 12,7.5Z"/>
+                    </svg>
+                    <div class="nav-label">Akun</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal" id="logoutModal">
+        <div class="modal-content">
+            <h3>Konfirmasi Logout</h3>
+            <p>Apakah Anda yakin ingin keluar dari aplikasi?</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="hideLogoutModal()">Batal</button>
+                <button class="btn btn-confirm" onclick="confirmLogout()">Keluar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content" style="max-width: 500px; text-align: left;">
+            <h3 style="text-align: center; margin-bottom: 20px;">Edit Profil</h3>
+            <form onsubmit="saveProfile(event)">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #333;">Nama Lengkap</label>
+                    <input type="text" id="editName" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;" required>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #333;">Email</label>
+                    <input type="email" id="editEmail" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;" required>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #333;">Kelas</label>
+                    <select id="editClass" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                        <option value="XII IPA 1">XII IPA 1</option>
+                        <option value="XII IPA 2">XII IPA 2</option>
+                        <option value="XII IPS 1">XII IPS 1</option>
+                        <option value="XII IPS 2">XII IPS 2</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-cancel" onclick="hideEditProfileModal()">Batal</button>
+                    <button type="submit" class="btn" style="background: #4caf50; color: white;">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-content" style="max-width: 500px; text-align: left;">
+            <h3 style="text-align: center; margin-bottom: 20px;">Ubah Password</h3>
+            <form onsubmit="changePasswordSubmit(event)">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #333;">Password Lama</label>
+                    <input type="password" id="oldPassword" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;" required>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #333;">Password Baru</label>
+                    <input type="password" id="newPassword" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;" required>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #333;">Konfirmasi Password Baru</label>
+                    <input type="password" id="confirmPassword" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-cancel" onclick="hideChangePasswordModal()">Batal</button>
+                    <button type="submit" class="btn" style="background: #2196f3; color: white;">Ubah Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Use in-memory storage instead of localStorage for compatibility
+        let userData = {
+            isLoggedIn: true,
+            userName: 'Ahmad Ramadhan',
+            userEmail: 'ahmad.ramadhan@sekolah.id',
+            userClass: 'XII IPA 1'
+        };
+
+        // Load user data on page load
+        window.addEventListener('load', function() {
+            checkAuthentication();
+            loadUserData();
+        });
+
+        function checkAuthentication() {
+            if (!userData.isLoggedIn) {
+                alert('Anda harus login terlebih dahulu!');
+                window.location.href = 'index.html';
+                return;
+            }
+        }
+
+        function loadUserData() {
+            const userName = userData.userName || 'Ahmad Ramadhan';
+            const userEmail = userData.userEmail || 'ahmad.ramadhan@sekolah.id';
+            
+            // Update user name and email display
+            document.getElementById('userNameLarge').textContent = userName;
+            document.getElementById('userEmailLarge').textContent = userEmail;
+            
+            // Update avatar with first letter of name
+            const firstLetter = userName.charAt(0).toUpperCase();
+            document.getElementById('userAvatarLarge').textContent = firstLetter;
+        }
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+
+        function editAvatar() {
+            alert('Fitur ubah avatar akan segera tersedia!\n\nSaat ini Anda dapat mengganti avatar melalui menu Edit Profil.');
+        }
+
+        function editProfile() {
+            const userName = userData.userName || 'Ahmad Ramadhan';
+            const userEmail = userData.userEmail || 'ahmad.ramadhan@sekolah.id';
+            
+            document.getElementById('editName').value = userName;
+            document.getElementById('editEmail').value = userEmail;
+            document.getElementById('editClass').value = userData.userClass || 'XII IPA 1';
+            
+            document.getElementById('editProfileModal').style.display = 'flex';
+        }
+
+        function hideEditProfileModal() {
+            document.getElementById('editProfileModal').style.display = 'none';
+        }
+
+        function saveProfile(event) {
+            event.preventDefault();
+            
+            const newName = document.getElementById('editName').value;
+            const newEmail = document.getElementById('editEmail').value;
+            const newClass = document.getElementById('editClass').value;
+            
+            // Save to userData object
+            userData.userName = newName;
+            userData.userEmail = newEmail;
+            userData.userClass = newClass;
+            
+            // Update display
+            loadUserData();
+            
+            // Update role display
+            document.querySelector('.profile-role').textContent = `Siswa Kelas ${newClass}`;
+            
+            hideEditProfileModal();
+            
+            // Show success message
+            setTimeout(() => {
+                alert('Profil berhasil diperbarui!');
+            }, 300);
+        }
+
+        function changePassword() {
+            document.getElementById('changePasswordModal').style.display = 'flex';
+        }
+
+        function hideChangePasswordModal() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+            // Clear form
+            document.getElementById('oldPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+
+        function changePasswordSubmit(event) {
+            event.preventDefault();
+            
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword !== confirmPassword) {
+                alert('Password baru dan konfirmasi password tidak cocok!');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                alert('Password baru harus minimal 6 karakter!');
+                return;
+            }
+            
+            // Simulate password change (in real app, this would be an API call)
+            setTimeout(() => {
+                hideChangePasswordModal();
+                alert('Password berhasil diubah!');
+            }, 500);
+        }
+
+        function notificationSettings() {
+            alert('Pengaturan Notifikasi\n\n✓ Notifikasi Pengumuman: Aktif\n✓ Notifikasi Tugas: Aktif\n✓ Notifikasi Jadwal: Aktif\n✓ Email Notifikasi: Nonaktif\n\nFitur pengaturan detail akan segera tersedia!');
+        }
+
+        function helpCenter() {
+            alert('Pusat Bantuan\n\n📚 FAQ Umum\n🎯 Panduan Penggunaan\n📞 Kontak Support: support@sekolah.id\n💬 Live Chat: Senin-Jumat 08:00-17:00\n\nUntuk bantuan lebih lanjut, silakan hubungi admin sekolah.');
+        }
+
+        function showLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'flex';
+        }
+
+        function hideLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            // Clear login data
+            userData.isLoggedIn = false;
+            userData.userName = '';
+            userData.userEmail = '';
+            userData.userClass = '';
+            
+            // Redirect to login
+            window.location.href = 'index.html';
+        }
+
+        function navigateToAnnouncements() {
+            alert('Halaman Pengumuman akan segera tersedia!');
+        }
+
+        function navigateToSettings() {
+            alert('Halaman Setting akan segera tersedia!');
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Add ripple effect to menu items
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(102, 126, 234, 0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.left = (e.offsetX - 10) + 'px';
+                ripple.style.top = (e.offsetY - 10) + 'px';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.pointerEvents = 'none';
+                
+                this.style.position = 'relative';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add hover effects to stat cards
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

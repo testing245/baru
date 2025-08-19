@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistem Sekolah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            background: #f8f9fa;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px 30px;
+            color: white;
+            position: relative;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-avatar {
+            width: 50px;
+            height: 50px;
+            background: #9c27b0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .profile-text h3 {
+            font-size: 14px;
+            color: #ffa726;
+            margin-bottom: 2px;
+        }
+
+        .profile-text h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .logout-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .logout-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .settings-container {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .settings-container:hover {
+            transform: scale(1.1);
+        }
+
+        .settings-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .date-card {
+            background: white;
+            margin: 0 30px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .date-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .date-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .semester-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 8px;
+        }
+
+        .stat-number.hadir {
+            background: #e8f5e8;
+            color: #4caf50;
+        }
+
+        .stat-number.izin {
+            background: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .stat-number.sakit {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+
+        .stat-number.alpha {
+            background: #ffebee;
+            color: #f44336;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .schedule-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #2196f3;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .schedule-link:hover {
+            opacity: 0.8;
+        }
+
+        .agenda-card {
+            background: white;
+            margin: 20px 30px;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .agenda-icon {
+            width: 40px;
+            height: 40px;
+            background: #ff9800;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .agenda-content h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .agenda-content p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .pro-badge {
+            background: #ff9800;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 30px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .empty-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background: #f5f5f5;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .person-figure {
+            width: 60px;
+            height: 80px;
+            position: relative;
+        }
+
+        .person-head {
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            margin: 0 auto 5px;
+        }
+
+        .person-body {
+            width: 30px;
+            height: 40px;
+            background: #333;
+            border-radius: 15px 15px 5px 5px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .person-arm {
+            width: 25px;
+            height: 8px;
+            background: #333;
+            position: absolute;
+            right: -20px;
+            top: 8px;
+            border-radius: 4px;
+        }
+
+        .person-legs {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 5px;
+        }
+
+        .person-leg {
+            width: 8px;
+            height: 15px;
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .dots-pattern {
+            position: absolute;
+            right: 15px;
+            top: 20px;
+        }
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            background: #ff9800;
+            border-radius: 50%;
+            margin: 3px 0;
+        }
+
+        .dots-row {
+            display: flex;
+            gap: 3px;
+            margin: 2px 0;
+        }
+
+        .empty-text {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px 0 25px;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #666;
+        }
+
+        .nav-item.active {
+            color: #ff9800;
+        }
+
+        .nav-item:hover {
+            opacity: 0.7;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .arrow-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .logout-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-cancel {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-confirm {
+            background: #f44336;
+            color: white;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .welcome-banner h2 {
+            margin-bottom: 10px;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="profile-section">
+                <div class="profile-info">
+                    <div class="profile-avatar" id="userAvatar">A</div>
+                    <div class="profile-text">
+                        <h3 id="greeting">Selamat Pagi!</h3>
+                        <h2 id="userName">Ahmad Ramadhan</h2>
+                    </div>
+                </div>
+                <div class="header-buttons">
+                    <div class="settings-container" onclick="openSettings()">
+                        <svg class="settings-icon" viewBox="0 0 24 24" fill="white">
+                            <path
+                                d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                        </svg>
+                    </div>
+                    <svg class="logout-icon" viewBox="0 0 24 24" fill="white" onclick="showLogoutModal()">
+                        <path
+                            d="M17,7L15.59,8.41L18.17,11H8V13H18.17L15.59,15.59L17,17L22,12L17,7M4,5H12V3H4A2,2 0 0,0 2,5V19A2,2 0 0,0 4,21H12V19H4V5Z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="welcome-banner" id="welcomeBanner" style="display: none;">
+            <h2>Selamat Datang!</h2>
+            <p>Anda berhasil masuk ke sistem. Selamat menggunakan aplikasi!</p>
+        </div>
+
+        <div class="date-card">
+            <div class="date-header">
+                <div class="date-text" id="currentDate">Sabtu, 09 Agu 2025</div>
+                <div class="semester-badge">Semester Ganjil</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number hadir" id="hadirCount">0</div>
+                    <div class="stat-label">Hadir</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number izin" id="izinCount">0</div>
+                    <div class="stat-label">Izin</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number sakit" id="sakitCount">0</div>
+                    <div class="stat-label">Sakit</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number alpha" id="alphaCount">0</div>
+                    <div class="stat-label">Alpha</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty-state">
+            <div class="empty-illustration">
+                <div class="person-figure">
+                    <div class="person-head"></div>
+                    <div class="person-body">
+                        <div class="person-arm"></div>
+                    </div>
+                    <div class="person-legs">
+                        <div class="person-leg"></div>
+                        <div class="person-leg"></div>
+                    </div>
+                </div>
+                <div class="dots-pattern">
+                    <div class="dots-row">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="dots-row">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="dots-row">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="empty-text">Anda tidak memiliki jadwal hari ini.</div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <div class="nav-item active" onclick="setActiveNav(this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M10,20v-6h4v6h5v-8h3L12,3L2,12h3v8z" />
+                    </svg>
+                    <div class="nav-label">Beranda</div>
+                </div>
+                <a href="attendance.html" class="nav-item" onclick="setActiveNav(this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M9,10H7V12H9V10M13,10H11V12H13V10M17,10H15V12H17V10M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M19,19H5V8H19V19Z" />
+                    </svg>
+                    <div class="nav-label">Absen</div>
+                </a>
+                <a href="announcements.html" class="nav-item" onclick="setActiveNav(this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                    </svg>
+                    <div class="nav-label">Pengumuman</div>
+                </a>
+                <a href="account.html" class="nav-item" onclick="setActiveNav(this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,13A1.5,1.5 0 0,1 10.5,11.5A1.5,1.5 0 0,1 12,10A1.5,1.5 0 0,1 13.5,11.5A1.5,1.5 0 0,1 12,13M12,7.5C9.5,7.5 7.5,9.5 7.5,12C7.5,14.5 9.5,16.5 12,16.5C14.5,16.5 16.5,14.5 16.5,12C16.5,9.5 14.5,7.5 12,7.5Z" />
+                    </svg>
+                    <div class="nav-label">Akun</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="modal-content">
+            <h3>Konfirmasi Logout</h3>
+            <p>Apakah Anda yakin ingin keluar dari aplikasi?</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="hideLogoutModal()">Batal</button>
+                <button class="btn btn-confirm" onclick="confirmLogout()">Keluar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication on page load
+        window.addEventListener('load', function () {
+            checkAuthentication();
+            loadUserData();
+            updateDateTime();
+            updateGreeting();
+
+            // Show welcome banner if just logged in
+            const justLoggedIn = sessionStorage.getItem('justLoggedIn');
+            if (justLoggedIn === 'true') {
+                const welcomeBanner = document.getElementById('welcomeBanner');
+                welcomeBanner.style.display = 'block';
+                setTimeout(() => {
+                    welcomeBanner.style.display = 'none';
+                }, 5000);
+                sessionStorage.removeItem('justLoggedIn');
+            }
+
+            // Update greeting every minute
+            setInterval(updateGreeting, 60000);
+        });
+
+        function checkAuthentication() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                alert('Anda harus login terlebih dahulu!');
+                window.location.href = 'index.html';
+                return;
+            }
+        }
+
+        function loadUserData() {
+            const userName = localStorage.getItem('userName') || 'Ahmad Ramadhan';
+            const userEmail = localStorage.getItem('userEmail') || '';
+
+            // Update user name display
+            document.getElementById('userName').textContent = userName;
+
+            // Update avatar with first letter of name
+            const firstLetter = userName.charAt(0).toUpperCase();
+            document.getElementById('userAvatar').textContent = firstLetter;
+        }
+
+        function setActiveNav(element) {
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add active class to clicked item
+            element.classList.add('active');
+
+            // Optional: Add some feedback
+            const label = element.querySelector('.nav-label').textContent;
+            console.log(`Navigated to: ${label}`);
+        }
+
+        function showLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            modal.style.display = 'flex';
+        }
+
+        function hideLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            modal.style.display = 'none';
+        }
+
+        function confirmLogout() {
+            // Clear login data
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            sessionStorage.clear();
+
+            // Redirect to login
+            window.location.href = 'index.html';
+        }
+
+        function openSettings() {
+            alert('Menu Pengaturan:\n\nâ€¢ Profil Pengguna\nâ€¢ Notifikasi\nâ€¢ Keamanan\nâ€¢ Tema Aplikasi\nâ€¢ Bahasa\nâ€¢ Tentang Aplikasi\n\nHalaman pengaturan lengkap akan segera tersedia!');
+        }
+
+        function navigateToAbsen() {
+            window.location.href = 'attendance.html';
+        }
+
+        function navigateToAnnouncements() {
+            window.location.href = 'announcements.html';
+        }
+
+        function navigateToSettings() {
+            openSettings(); // Use the same function as header settings button
+        }
+
+        // Update date and time
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            };
+            const dateString = now.toLocaleDateString('id-ID', options);
+            document.getElementById('currentDate').textContent = dateString;
+        }
+
+        // Update greeting based on time
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting;
+
+            if (hour < 11) {
+                greeting = 'Selamat Pagi!';
+            } else if (hour < 15) {
+                greeting = 'Selamat Siang!';
+            } else if (hour < 18) {
+                greeting = 'Selamat Sore!';
+            } else {
+                greeting = 'Selamat Malam!';
+            }
+
+            document.getElementById('greeting').textContent = greeting;
+        }
+
+        // Simulate attendance data (you can connect this to real data)
+        function updateAttendanceStats() {
+            // Example: Update stats with random numbers (replace with real data)
+            const stats = {
+                hadir: Math.floor(Math.random() * 10),
+                izin: Math.floor(Math.random() * 3),
+                sakit: Math.floor(Math.random() * 2),
+                alpha: Math.floor(Math.random() * 2)
+            };
+
+            document.getElementById('hadirCount').textContent = stats.hadir;
+            document.getElementById('izinCount').textContent = stats.izin;
+            document.getElementById('sakitCount').textContent = stats.sakit;
+            document.getElementById('alphaCount').textContent = stats.alpha;
+        }
+
+        // Add some interactive effects
+        document.querySelectorAll('.stat-item').forEach(item => {
+            item.addEventListener('click', function () {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('logoutModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                hideLogoutModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

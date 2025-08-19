@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Akun</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            min-height: 600px;
+        }
+
+        .illustration-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .illustration {
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .laptop-setup {
+            width: 320px;
+            height: 220px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .laptop-base {
+            width: 280px;
+            height: 8px;
+            background: #666;
+            border-radius: 4px;
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .laptop-screen {
+            width: 240px;
+            height: 150px;
+            background: #333;
+            border-radius: 8px;
+            position: absolute;
+            bottom: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid #555;
+        }
+
+        .laptop-screen::before {
+            content: '';
+            width: 220px;
+            height: 130px;
+            background: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 4px;
+        }
+
+        .success-checkmark {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: #f39c12;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .success-checkmark::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .person-celebrating {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 100px;
+            z-index: 5;
+        }
+
+        .person-head {
+            width: 25px;
+            height: 25px;
+            background: #8b4513;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .person-body {
+            width: 35px;
+            height: 40px;
+            background: #f39c12;
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 18px 18px 0 0;
+        }
+
+        .person-arm-left {
+            width: 28px;
+            height: 8px;
+            background: #f39c12;
+            position: absolute;
+            top: 30px;
+            left: 15px;
+            border-radius: 4px;
+            transform: rotate(-45deg);
+        }
+
+        .person-arm-right {
+            width: 28px;
+            height: 8px;
+            background: #f39c12;
+            position: absolute;
+            top: 30px;
+            right: 15px;
+            border-radius: 4px;
+            transform: rotate(45deg);
+        }
+
+        .person-legs {
+            width: 40px;
+            height: 30px;
+            background: #2c3e50;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 0 0 10px 10px;
+        }
+
+        .plant-left {
+            position: absolute;
+            bottom: 48px;
+            left: 20px;
+            width: 20px;
+            height: 50px;
+        }
+
+        .plant-right {
+            position: absolute;
+            bottom: 48px;
+            right: 20px;
+            width: 20px;
+            height: 50px;
+        }
+
+        .plant-pot {
+            width: 20px;
+            height: 15px;
+            background: #8b6f47;
+            position: absolute;
+            bottom: 0;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .plant-stem {
+            width: 4px;
+            height: 25px;
+            background: #27ae60;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .plant-leaves {
+            width: 16px;
+            height: 10px;
+            background: #f39c12;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 8px;
+        }
+
+        .signup-section {
+            flex: 1;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .signup-header {
+            margin-bottom: 40px;
+        }
+
+        .signup-title {
+            color: #f39c12;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            padding-left: 50px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #f39c12;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #f39c12;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .signup-button {
+            width: 100%;
+            padding: 15px;
+            background: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .signup-button:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .login-link {
+            text-align: center;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #f39c12;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            color: #e67e22;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                margin: 10px;
+            }
+            
+            .illustration-section {
+                min-height: 200px;
+            }
+            
+            .signup-section {
+                padding: 40px 30px;
+            }
+            
+            .laptop-setup {
+                width: 240px;
+                height: 160px;
+            }
+            
+            .laptop-screen {
+                width: 180px;
+                height: 110px;
+            }
+            
+            .laptop-screen::before {
+                width: 160px;
+                height: 90px;
+            }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            width: 40px;
+            height: 40px;
+            background: white;
+            transform: rotate(45deg);
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .document-paper {
+            position: absolute;
+            top: 10px;
+            left: 60px;
+            width: 80px;
+            height: 40px;
+            background: white;
+            border-radius: 4px;
+            transform: rotate(-15deg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 8;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f39c12;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="illustration-section">
+            <div class="floating-shapes">
+                <div class="shape"></div>
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+            <div class="illustration">
+                <div class="laptop-setup">
+                    <div class="document-paper"></div>
+                    <div class="success-checkmark"></div>
+                    <div class="plant-left">
+                        <div class="plant-pot"></div>
+                        <div class="plant-stem"></div>
+                        <div class="plant-leaves"></div>
+                    </div>
+                    <div class="plant-right">
+                        <div class="plant-pot"></div>
+                        <div class="plant-stem"></div>
+                        <div class="plant-leaves"></div>
+                    </div>
+                    <div class="laptop-base"></div>
+                    <div class="laptop-screen"></div>
+                    <div class="person-celebrating">
+                        <div class="person-head"></div>
+                        <div class="person-body"></div>
+                        <div class="person-arm-left"></div>
+                        <div class="person-arm-right"></div>
+                        <div class="person-legs"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="signup-section">
+            <div class="signup-header">
+                <h1 class="signup-title">Pendaftaran Akun</h1>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                Pendaftaran berhasil! Mengarahkan ke halaman login...
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                Terjadi kesalahan dalam pendaftaran. Silakan coba lagi.
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Sedang membuat akun...</p>
+            </div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label class="form-label" for="fullname">Nama Lengkap</label>
+                    <div class="input-container">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="fullname" class="form-input" placeholder="Masukkan Nama Lengkap" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="schoolname">Nama Sekolah</label>
+                    <div class="input-container">
+                        <span class="input-icon">🏫</span>
+                        <input type="text" id="schoolname" class="form-input" placeholder="Masukkan Nama Sekolah" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <div class="input-container">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" id="email" class="form-input" placeholder="Masukkan Email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-container password-container">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="password" class="form-input" placeholder="Masukkan Password" required>
+                        <button type="button" class="password-toggle" id="passwordToggle">👁</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="signup-button">Buat Akun</button>
+            </form>
+
+            <div class="login-link">
+                Sudah punya akun? <a href="index.html">Masuk</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle functionality
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordInput = document.getElementById('password');
+
+        passwordToggle.addEventListener('click', function() {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.textContent = '👁';
+            }
+        });
+
+        // Form submission
+        const signupForm = document.getElementById('signupForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const loading = document.getElementById('loading');
+
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fullname = document.getElementById('fullname').value;
+            const schoolname = document.getElementById('schoolname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Hide previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            loading.style.display = 'block';
+
+            // Simulate registration process
+            setTimeout(() => {
+                loading.style.display = 'none';
+
+                // Basic validation
+                if (fullname && schoolname && email && password) {
+                    // Check email format
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        errorMessage.textContent = 'Format email tidak valid.';
+                        errorMessage.style.display = 'block';
+                        return;
+                    }
+
+                    // Check password length
+                    if (password.length < 6) {
+                        errorMessage.textContent = 'Password harus minimal 6 karakter.';
+                        errorMessage.style.display = 'block';
+                        return;
+                    }
+
+                    // Save user data (in a real app, this would be sent to server)
+                    const userData = {
+                        fullname,
+                        schoolname,
+                        email,
+                        password
+                    };
+                    localStorage.setItem('registeredUser', JSON.stringify(userData));
+
+                    // Success
+                    successMessage.style.display = 'block';
+                    signupForm.reset();
+                    
+                    // Redirect to login after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    errorMessage.textContent = 'Semua field harus diisi.';
+                    errorMessage.style.display = 'block';
+                }
+            }, 1500);
+        });
+
+        // Check if already logged in
+        window.addEventListener('load', function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Add smooth animations on load
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            container.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // Add hover effects to form inputs
+        const formInputs = document.querySelectorAll('.form-input');
+        formInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.input-container').style.transform = 'translateY(-2px)';
+                this.closest('.input-container').style.transition = 'transform 0.3s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.closest('.input-container').style.transform = 'translateY(0)';
+            });
+        });
+
+        // Email validation on input
+        const emailInput = document.getElementById('email');
+        emailInput.addEventListener('input', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (this.value && !emailRegex.test(this.value)) {
+                this.style.borderColor = '#e74c3c';
+            } else {
+                this.style.borderColor = '#e0e0e0';
+            }
+        });
+
+        // Password strength indicator
+        const passwordField = document.getElementById('password');
+        passwordField.addEventListener('input', function() {
+            const password = this.value;
+            if (password.length < 6) {
+                this.style.borderColor = '#e74c3c';
+            } else if (password.length < 8) {
+                this.style.borderColor = '#f39c12';
+            } else {
+                this.style.borderColor = '#27ae60';
+            }
+        });
+    </script>
+</body>
+</html>
